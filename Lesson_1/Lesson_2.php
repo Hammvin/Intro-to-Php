@@ -13,7 +13,7 @@
 
 //STRINGS
 //a string is a sequence of characters enclosed in double or single quotes eg. "Hello World"
-// 'php is owsome'
+// 'php is ow-some'
 
 $greetings ="Hello php dev";
 
