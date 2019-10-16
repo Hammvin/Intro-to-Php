@@ -1,3 +1,4 @@
+<?php session_start()?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,14 +20,32 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <?php
+            if (isset($_SESSION['logged-in'])){
+                echo '
+                    <li class="nav-item">
+                <a class="nav-link" href="secret.php">Profile</a>
+            </li>
+                <li class="nav-item">
+                <a class="nav-link" href="logout.php">Logout</a>
+            </li>
+                
+                ';
+            }else{
+                echo '
+                <li class="nav-item">
+                <a class="nav-link" href="signup.php">Signup</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="login.php">Login</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
-            </li>
+                
+                ';
+            }
+            ?>
+
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>

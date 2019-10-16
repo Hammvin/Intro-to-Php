@@ -1,3 +1,4 @@
+
 <?php
 //initializing variables
 $username = $email = $password1 = $password2 = "";
@@ -5,44 +6,37 @@ $username = $email = $password1 = $password2 = "";
 if (isset($_POST['Sign-upBtn'])){
 
     //GRAB THE POST DATA
-    $username = $_POST['username'];
+    $name = $_POST['username'];
     $email = $_POST['email'];
     $password1 = $_POST['password1'];
     $password2 = $_POST['password2'];
 
-    if ($password1 === $password2){
+    if ($password1 === $password2) {
         $newpassword = $password1;
 
-        //Collect and add data to the DB
+        //Config for the DB
         $server_name = "localhost";
         $username = "root";
         $password = "";
         $dbname = "Facebook";
 
-        $conn = mysqli_connect($server_name,$username,$password,$dbname);
+        $conn = mysqli_connect($server_name, $username, $password, $dbname);
 
         //Check connection
-        if (!$conn){
-            echo "Connection to the DB unsuccessful";
-        }else{
-            //execute the query
-            $sql = "INSERT INTO `users`(`id`, `username`, `email`, `password`) VALUES (NULL ,`$username`,`$email`,`$newpassword`)";
-
-            if (mysqli_query($conn, $sql)){
-
-                //Send the user to the login page
-        header("location:login.php");
-            }else{
-                echo "Saving unsuccessful <br>";
-            }
-            echo "Connection successful <br>";
+        if (!$conn) {
+            die("Connection unsuccessful: " . mysqli_connect_error());
         }
+        //execute the query
+        $sql = "INSERT INTO `users`(`id`, `username`, `email`, `password`) VALUES (NULL ,'$name','$email','$newpassword')";
 
+        if (mysqli_query($conn, $sql)){
+            echo "New record created successfully";
 
-    }else {
-        header("location:Complete_form.php");
+            header("location:login.php");
+        }else{
+            echo "Error:" .$sql ."<br>" . mysqli_error($conn);
+        }
     }
-
 
 
     //echo $username.'<br>';
@@ -58,7 +52,7 @@ if (isset($_POST['Sign-upBtn'])){
 
 <html>
 <head>
-    <title>Signup form</title>
+    <title>Sign-up form</title>
 </head>
 <body>
 <form action="Complete_form.php" method="post">
@@ -70,4 +64,3 @@ if (isset($_POST['Sign-upBtn'])){
 </form>
 </body>
 </html>
-

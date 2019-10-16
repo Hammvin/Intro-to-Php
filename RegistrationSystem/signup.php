@@ -1,60 +1,62 @@
 <?php include 'header.php';
-
-
-$name = $email = $password1 = $password2 = "";
-
+include 'config.php';
+$name = $email = $password1 = $password2 = '';
 function cleaner($data){
     $data = trim($data);
     $data = htmlspecialchars($data);
     $data = stripslashes($data);
-
     return $data;
 }
-
-if (isset($_POST['signupBtn'])){
-
-    //grabbing form data
+if(isset($_POST['signupBtn'])){
+//    grabbing form data
     $name = $_POST['jina'];
-    $email = $_POST['email'];
+    $email = $_POST['arafa'];
     $password1 = $_POST['basswad1'];
     $password2 = $_POST['basswad2'];
 
-    //cleaning data
+//    clean the data
     $name = cleaner($name);
     $email = cleaner($email);
     $password1 = cleaner($password1);
     $password2 = cleaner($password2);
 
 
-    //Confirm passwords are matching
-    if ($password1 !==$password2){
-        header('location:signup.php');
+//    check if the user exists in the database: if true ask them to login instead
+    $sql = "SELECT * FROM `users` WHERE email ='$email' LIMIT 1";
+    $results = mysqli_query($conn,$sql);
+
+
+    if(mysqli_num_rows($results) > 0){
+        header("location:login.php");
+        exit();
+    }else{
+
+        //Check if passwords match
+        if($password1!==$password2){
+            $password_err = 'Error, passwords not matching';
+
+            header('location:signup.php');
+            exit();
+
+        }else{
+
+//            encrypt the password
+            $password1 = md5($password2);
+
+            //Insert user into the database
+            $sql = "INSERT INTO `users`(`id`, `name`, `email`, `password`) VALUES (NULL,'$name','$email','$password1')";
+            if (mysqli_query($conn,$sql)){
+                echo "New record added";
+            }else{
+                echo "Error: " .$sql . "<br>";
+            }
+
+            //Redirect to the login page
+            header("location:login.php");
+        }
     }
-
-    //encrypting the password
-    $password2 = md5($password2);
-
-    //database conn
-include 'config.php';
-
-    //sql instruction
-    $sql = "INSERT INTO `users`(`id`, `name`, `email`, `password`) VALUES (NULL ,'$name',' $email','$password2')";
-
-    if(mysqli_query($conn, $sql)){
-        echo "Records inserted successfully.";
-    } else{
-        echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
-    }
-
-// Close connection
     mysqli_close($conn);
-
 }
-
-
-
-
-
 ?>
 
 <div class="container">
@@ -68,7 +70,7 @@ include 'config.php';
                 </div>
                 <div class="form-group">
                     <label for ='username'>Email</label>
-                    <input type="email" name="email" placeholder="Enter Email" class="form-control" required>
+                    <input type="email" name="arafa" placeholder="Enter Email" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for ='username'>Password</label>
