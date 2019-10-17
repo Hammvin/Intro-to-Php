@@ -48,6 +48,13 @@ if(isset($_POST['loginBtn'])){
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <form action="login.php" method="post">
+                <div>
+                    <?php
+                    if (isset($_GET['error'])){
+                        echo "<p class='text-danger'>Error: User already exists</p>";
+                    }
+                    ?>
+                </div>
                 <div class="form-group">
                     <label for ='username'>Email</label>
                     <input type="email" name="arafa" placeholder="Enter Email" class="form-control" required>

@@ -1,12 +1,18 @@
 <?php include 'header.php';
 include 'config.php';
 $name = $email = $password1 = $password2 = '';
+$login_err = '';
+
+
 function cleaner($data){
     $data = trim($data);
     $data = htmlspecialchars($data);
     $data = stripslashes($data);
     return $data;
 }
+
+//REQUEST:USED TO COLLECT DATA from a submitted html form.
+//POST:USED TO COLLECT DATA from a submitted html form that used method = post
 if(isset($_POST['signupBtn'])){
 //    grabbing form data
     $name = $_POST['jina'];
@@ -27,7 +33,10 @@ if(isset($_POST['signupBtn'])){
 
 
     if(mysqli_num_rows($results) > 0){
-        header("location:login.php");
+
+        //User found
+        $login_err = "User exists. Login";
+        header("location:login.php?error=$login_err");
         exit();
     }else{
 
@@ -35,7 +44,7 @@ if(isset($_POST['signupBtn'])){
         if($password1!==$password2){
             $password_err = 'Error, passwords not matching';
 
-            header('location:signup.php');
+            header('location:signup.php?error=password_err');
             exit();
 
         }else{
@@ -72,6 +81,13 @@ if(isset($_POST['signupBtn'])){
                     <label for ='username'>Email</label>
                     <input type="email" name="arafa" placeholder="Enter Email" class="form-control" required>
                 </div>
+                <div>
+                    <?php
+                    if (isset($_GET['error'])){
+                        echo "<p class='text-danger'>Error: Passwords didn't match.</p>";
+                    }
+                    ?>
+                </div>
                 <div class="form-group">
                     <label for ='username'>Password</label>
                     <input type="password" name="basswad1" placeholder="Enter Password" class="form-control" required>
@@ -89,8 +105,6 @@ if(isset($_POST['signupBtn'])){
         <div class="col-md-4"></div>
     </div>
 </div>
-
-
 
 
 

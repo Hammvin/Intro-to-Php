@@ -1,0 +1,8 @@
+Superglobals
+1. $_GLOBALS
+2. $_SERVER
+3. $_SERVER
+4. $_REQUEST
+5. $_POST
+6. $_GET
+7. $_SESSION
